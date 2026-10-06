@@ -1,0 +1,95 @@
+import React from 'react';
+import { Layers, FileCode, Plus, RefreshCw, CheckCircle2, AlertTriangle } from 'lucide-react';
+
+interface NavbarProps {
+  backendHealthy: boolean | null;
+  onRefresh: () => void;
+  onOpenCreateModal: () => void;
+  isRefreshing: boolean;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({
+  backendHealthy,
+  onRefresh,
+  onOpenCreateModal,
+  isRefreshing,
+}) => {
+  return (
+    <header className="navbar-header" role="banner">
+      <div className="navbar-container">
+        {/* Brand identity */}
+        <div className="navbar-brand">
+          <div className="brand-icon-box">
+            <Layers size={22} className="brand-icon" />
+          </div>
+          <div className="brand-text-group">
+            <div className="brand-title-row">
+              <span className="brand-name">FORSEE</span>
+              <span className="brand-tag">NEXUS</span>
+              <span className="recruitment-badge">Dev Recruitment 2026</span>
+            </div>
+            <span className="brand-subtitle">Student Identity & Career Readiness</span>
+          </div>
+        </div>
+
+        {/* Right header controls */}
+        <div className="navbar-actions">
+          {/* Health indicator */}
+          <div
+            className={`api-status-badge ${
+              backendHealthy === true ? 'online' : backendHealthy === false ? 'offline' : 'checking'
+            }`}
+            title="FastAPI Backend Status"
+          >
+            {backendHealthy === true ? (
+              <>
+                <CheckCircle2 size={13} className="status-icon" />
+                <span>API Online (v1)</span>
+              </>
+            ) : backendHealthy === false ? (
+              <>
+                <AlertTriangle size={13} className="status-icon" />
+                <span>API Disconnected</span>
+              </>
+            ) : (
+              <span>Connecting...</span>
+            )}
+          </div>
+
+          {/* Swagger docs link */}
+          <a
+            href="http://localhost:8000/docs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-nav-secondary docs-link"
+            title="Open FastAPI Swagger interactive documentation"
+          >
+            <FileCode size={15} />
+            <span>Swagger Docs</span>
+          </a>
+
+          {/* Refresh button */}
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            className="btn btn-nav-secondary refresh-btn"
+            title="Refresh student records from API"
+          >
+            <RefreshCw size={15} className={isRefreshing ? 'animate-spin' : ''} />
+          </button>
+
+          {/* Create new student button */}
+          <button
+            type="button"
+            onClick={onOpenCreateModal}
+            className="btn btn-primary create-student-btn"
+          >
+            <Plus size={15} />
+            <span>New Student</span>
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+};
