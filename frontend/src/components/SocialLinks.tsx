@@ -1,5 +1,6 @@
 import React from 'react';
-import { Linkedin, Github, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
+import { LinkedInIcon, GitHubIcon } from './BrandIcons';
 
 interface SocialLinksProps {
   linkedinUrl?: string | null;
@@ -30,7 +31,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           className="social-btn linkedin-btn"
           aria-label="Visit student's LinkedIn profile"
         >
-          <Linkedin size={16} className="social-icon" />
+          <LinkedInIcon size={16} className="social-icon" />
           <span>LinkedIn</span>
           <ExternalLink size={12} className="external-indicator" />
         </a>
@@ -44,7 +45,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
           className="social-btn github-btn"
           aria-label="Visit student's GitHub profile"
         >
-          <Github size={16} className="social-icon" />
+          <GitHubIcon size={16} className="social-icon" />
           <span>GitHub</span>
           <ExternalLink size={12} className="external-indicator" />
         </a>

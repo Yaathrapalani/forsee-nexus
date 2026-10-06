@@ -10,11 +10,10 @@ import {
   Hash,
   Building2,
   Calendar,
-  Linkedin,
-  Github,
 } from 'lucide-react';
 import type { Student, StudentUpdateInput } from '../features/students/studentTypes';
 import { SkillBadge } from './SkillBadge';
+import { LinkedInIcon, GitHubIcon } from './BrandIcons';
 
 interface StudentFormProps {
   initialStudent: Student;
@@ -395,7 +394,7 @@ export const StudentForm: React.FC<StudentFormProps> = ({
       <div className="form-grid">
         <div className="form-group">
           <label htmlFor="student-linkedin" className="form-label">
-            <Linkedin size={14} className="label-icon" />
+            <LinkedInIcon size={14} className="label-icon" />
             <span>LinkedIn URL</span>
           </label>
           <input
@@ -418,7 +417,7 @@ export const StudentForm: React.FC<StudentFormProps> = ({
 
         <div className="form-group">
           <label htmlFor="student-github" className="form-label">
-            <Github size={14} className="label-icon" />
+            <GitHubIcon size={14} className="label-icon" />
             <span>GitHub URL</span>
           </label>
           <input
