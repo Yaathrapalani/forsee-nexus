@@ -83,7 +83,7 @@ def test_create_student_validation_errors(client: TestClient):
     )
     assert res.status_code == 422
 
-    # Invalid URL scheme
+    # Invalid avatar URL scheme
     res = client.post(
         "/api/v1/students",
         json={
@@ -95,6 +95,19 @@ def test_create_student_validation_errors(client: TestClient):
         },
     )
     assert res.status_code == 422
+
+    # Invalid external social URL scheme (relative path not allowed for LinkedIn)
+    res_social = client.post(
+        "/api/v1/students",
+        json={
+            "name": "John Doe",
+            "roll_number": "2024CS0005",
+            "department": "CSE",
+            "year": 2,
+            "linkedin_url": "/in/johndoe",
+        },
+    )
+    assert res_social.status_code == 422
 
 
 def test_get_student_by_id(client: TestClient, sample_student_payload: dict):

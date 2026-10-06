@@ -156,7 +156,7 @@ export const StudentForm: React.FC<StudentFormProps> = ({
         <div className="form-title-group">
           <h2 className="form-title">Edit Student Profile</h2>
           <p className="form-subtitle text-sm text-muted">
-            Update student details for FORSEE Nexus recruitment record #{initialStudent.id}
+            Update academic and profile information for student record #{initialStudent.id}
           </p>
         </div>
         <button

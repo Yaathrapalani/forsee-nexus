@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, FileCode, Plus, RefreshCw, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { GraduationCap, FileCode, Plus, RefreshCw, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 interface NavbarProps {
   backendHealthy: boolean | null;
@@ -19,16 +19,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="navbar-container">
         {/* Brand identity */}
         <div className="navbar-brand">
-          <div className="brand-icon-box">
-            <Layers size={22} className="brand-icon" />
+          <div className="brand-icon-box" aria-hidden="true">
+            <GraduationCap size={20} className="brand-icon" />
           </div>
           <div className="brand-text-group">
-            <div className="brand-title-row">
-              <span className="brand-name">FORSEE</span>
-              <span className="brand-tag">NEXUS</span>
-              <span className="recruitment-badge">Dev Recruitment 2026</span>
-            </div>
-            <span className="brand-subtitle">Student Identity & Career Readiness</span>
+            <span className="brand-name">FORESE</span>
+            <span className="brand-subtitle">Student Profile System</span>
           </div>
         </div>
 
@@ -40,16 +36,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               backendHealthy === true ? 'online' : backendHealthy === false ? 'offline' : 'checking'
             }`}
             title="FastAPI Backend Status"
+            role="status"
           >
             {backendHealthy === true ? (
               <>
                 <CheckCircle2 size={13} className="status-icon" />
-                <span>API Online (v1)</span>
+                <span>API Connected</span>
               </>
             ) : backendHealthy === false ? (
               <>
                 <AlertTriangle size={13} className="status-icon" />
-                <span>API Disconnected</span>
+                <span>API Offline</span>
               </>
             ) : (
               <span>Connecting...</span>
@@ -64,8 +61,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="btn btn-nav-secondary docs-link"
             title="Open FastAPI Swagger interactive documentation"
           >
-            <FileCode size={15} />
-            <span>Swagger Docs</span>
+            <FileCode size={14} />
+            <span>API Docs</span>
           </a>
 
           {/* Refresh button */}
@@ -75,8 +72,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             disabled={isRefreshing}
             className="btn btn-nav-secondary refresh-btn"
             title="Refresh student records from API"
+            aria-label="Refresh student records"
           >
-            <RefreshCw size={15} className={isRefreshing ? 'animate-spin' : ''} />
+            <RefreshCw size={14} className={isRefreshing ? 'animate-spin' : ''} />
           </button>
 
           {/* Create new student button */}
@@ -86,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="btn btn-primary create-student-btn"
           >
             <Plus size={15} />
-            <span>New Student</span>
+            <span>Add Student</span>
           </button>
         </div>
       </div>

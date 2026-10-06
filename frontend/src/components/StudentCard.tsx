@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Edit3,
-  GraduationCap,
   Building2,
   Calendar,
   Hash,
@@ -69,17 +68,11 @@ export const StudentCard: React.FC<StudentCardProps> = ({
 
   return (
     <article className="student-profile-card" aria-label={`Profile card for ${student.name}`}>
-      {/* Banner / Cover Header */}
-      <div className="card-banner">
-        <div className="banner-pattern" />
-        <div className="banner-badge">
-          <GraduationCap size={14} className="banner-icon" />
-          <span>FORESE Verified Identity</span>
-        </div>
-      </div>
+      {/* Subtle Card Header */}
+      <div className="card-banner" />
 
       <div className="card-body">
-        {/* Profile Avatar & Top Actions */}
+        {/* Profile Avatar & Primary Actions */}
         <div className="profile-header-row">
           <div className="avatar-wrapper">
             {student.avatar_url ? (
@@ -88,7 +81,6 @@ export const StudentCard: React.FC<StudentCardProps> = ({
                 alt={`${student.name}'s profile avatar`}
                 className="avatar-image"
                 onError={(e) => {
-                  // Fallback on image load error
                   (e.target as HTMLElement).style.display = 'none';
                   const fallback = (e.target as HTMLElement).nextElementSibling;
                   if (fallback) (fallback as HTMLElement).style.display = 'flex';
@@ -101,9 +93,6 @@ export const StudentCard: React.FC<StudentCardProps> = ({
               aria-hidden="true"
             >
               <span>{getInitials(student.name)}</span>
-            </div>
-            <div className="avatar-year-badge" title={`Year ${student.year}`}>
-              Y{student.year}
             </div>
           </div>
 
@@ -158,7 +147,7 @@ export const StudentCard: React.FC<StudentCardProps> = ({
           </div>
         </div>
 
-        {/* Completeness Indicator */}
+        {/* Profile Completeness Indicator */}
         <CompletenessIndicator student={student} />
 
         {/* Technical Skills Section */}
@@ -175,27 +164,27 @@ export const StudentCard: React.FC<StudentCardProps> = ({
             </div>
           ) : (
             <p className="empty-state-text text-muted text-sm">
-              No skills added yet. Click &apos;Edit Profile&apos; to showcase your technical stack.
+              No skills added yet. Click &apos;Edit Profile&apos; to add technical skills.
             </p>
           )}
         </div>
 
         {/* Social & Professional Links */}
         <div className="social-section">
-          <h2 className="section-title">Social & Portfolios</h2>
+          <h2 className="section-title">Professional Links</h2>
           <SocialLinks
             linkedinUrl={student.linkedin_url}
             githubUrl={student.github_url}
           />
         </div>
 
-        {/* Footer Audit Metadata */}
+        {/* Footer Record Metadata */}
         <footer className="card-footer-meta">
           <div className="timestamp-info">
             <Clock size={12} className="meta-icon-mini" />
             <span>Updated: {formatDate(student.updated_at)}</span>
           </div>
-          <span className="record-id-meta">Nexus ID: #{student.id}</span>
+          <span className="record-id-meta">Record ID: #{student.id}</span>
         </footer>
       </div>
     </article>

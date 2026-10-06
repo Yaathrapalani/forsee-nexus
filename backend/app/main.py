@@ -44,8 +44,8 @@ def seed_initial_data() -> None:
                     "Tailwind CSS",
                     "Git",
                 ],
-                linkedin_url="https://linkedin.com/in/aarav-sharma-nexus",
-                github_url="https://github.com/aarav-nexus",
+                linkedin_url="https://linkedin.com/in/aarav-sharma",
+                github_url="https://github.com/aarav-sharma",
             )
             db.add(sample_student)
             db.commit()

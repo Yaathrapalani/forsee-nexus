@@ -45,7 +45,7 @@ Student organisations and placement readiness cells like **FORESE** require depe
 - **Interactive Documentation**: Auto-generated OpenAPI 3.1 Swagger UI (`/docs`) and ReDoc (`/redoc`).
 
 ### Frontend (Student Profile Card)
-- **View Mode**: Displays avatar with fallback initials, verified identity banner, name, unique roll number pill, department, academic progression tag, interactive skill badges, and direct links to LinkedIn and GitHub.
+- **View Mode**: Displays avatar with fallback initials, student name, roll number badge, department, academic year, interactive skill badges, and direct links to LinkedIn and GitHub.
 - **Edit Mode**: Comprehensive editing with real-time field validation, live avatar image preview, and interactive skills manager (add via Enter/button, remove via badge chip, or quick-select suggestions).
 - **Profile Completeness Indicator**: Calculates profile completeness percentage based on meaningful profile fields with an expandable breakdown drawer.
 - **Student Management Toolbar**: Switch seamlessly between student profiles, filter by department or year, refresh records, and create new student profiles via a modal dialog.

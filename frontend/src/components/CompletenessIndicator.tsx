@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Circle, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { CheckCircle2, Circle, ChevronDown, ChevronUp, CheckSquare } from 'lucide-react';
 import type { Student } from '../features/students/studentTypes';
 
 interface CompletenessIndicatorProps {
@@ -21,49 +21,49 @@ export const CompletenessIndicator: React.FC<CompletenessIndicatorProps> = ({ st
       label: 'Student Name',
       weight: 15,
       completed: Boolean(student.name && student.name.trim().length > 0),
-      hint: 'Basic identity verification',
+      hint: 'Basic student identity',
     },
     {
       label: 'Roll Number',
       weight: 15,
       completed: Boolean(student.roll_number && student.roll_number.trim().length > 0),
-      hint: 'Institutional registration',
+      hint: 'College registration number',
     },
     {
       label: 'Academic Department',
       weight: 15,
       completed: Boolean(student.department && student.department.trim().length > 0),
-      hint: 'Branch affiliation',
+      hint: 'Branch of study',
     },
     {
       label: 'College Year',
       weight: 15,
       completed: Boolean(student.year && student.year >= 1 && student.year <= 5),
-      hint: 'Academic progression level',
+      hint: 'Current academic year',
     },
     {
       label: 'Profile Photo',
       weight: 10,
       completed: Boolean(student.avatar_url && student.avatar_url.trim().length > 0),
-      hint: 'Visual identity badge',
+      hint: 'Student photo or avatar',
     },
     {
       label: 'Skills (at least 3)',
       weight: 15,
       completed: Boolean(student.skills && student.skills.length >= 3),
-      hint: 'Technical stack readiness',
+      hint: 'Technical skills list',
     },
     {
       label: 'LinkedIn Profile',
       weight: 10,
       completed: Boolean(student.linkedin_url && student.linkedin_url.trim().length > 0),
-      hint: 'Professional network presence',
+      hint: 'Professional LinkedIn link',
     },
     {
       label: 'GitHub Profile',
       weight: 5,
       completed: Boolean(student.github_url && student.github_url.trim().length > 0),
-      hint: 'Code repository portfolio',
+      hint: 'GitHub code portfolio',
     },
   ];
 
@@ -72,10 +72,12 @@ export const CompletenessIndicator: React.FC<CompletenessIndicatorProps> = ({ st
     0
   );
 
+  const completedCount = checklist.filter((item) => item.completed).length;
+
   const getStatusColor = (percent: number) => {
-    if (percent >= 80) return 'var(--success)';
-    if (percent >= 50) return 'var(--warning)';
-    return 'var(--primary)';
+    if (percent === 100) return 'var(--success)';
+    if (percent >= 60) return 'var(--primary)';
+    return 'var(--warning)';
   };
 
   return (
@@ -83,7 +85,7 @@ export const CompletenessIndicator: React.FC<CompletenessIndicatorProps> = ({ st
       <div className="completeness-header">
         <div className="completeness-title-row">
           <div className="completeness-title">
-            <Sparkles size={16} className="text-accent" />
+            <CheckSquare size={16} className="completeness-icon" />
             <span>Profile Completeness</span>
           </div>
           <span
@@ -113,8 +115,8 @@ export const CompletenessIndicator: React.FC<CompletenessIndicatorProps> = ({ st
         <div className="completeness-subtext-row">
           <span className="text-muted text-xs">
             {totalPercentage === 100
-              ? 'Complete profile ready for FORESE review'
-              : `${100 - totalPercentage}% remaining for comprehensive profile`}
+              ? 'All profile fields completed'
+              : `${checklist.length - completedCount} of ${checklist.length} fields remaining`}
           </span>
           <button
             type="button"
@@ -124,12 +126,12 @@ export const CompletenessIndicator: React.FC<CompletenessIndicatorProps> = ({ st
           >
             {isExpanded ? (
               <>
-                <span>Hide breakdown</span>
+                <span>Hide details</span>
                 <ChevronUp size={14} />
               </>
             ) : (
               <>
-                <span>View checklist</span>
+                <span>View details</span>
                 <ChevronDown size={14} />
               </>
             )}
