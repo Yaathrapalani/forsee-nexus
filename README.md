@@ -208,7 +208,13 @@ cd ..
 From the repository root:
 
 ```powershell
-& .\backend\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+# From the repository root:
+& .\backend\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000 --reload
+
+# Or from inside backend directory:
+cd backend
+.\.venv\Scripts\Activate.ps1
+uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 - **API Base URL**: `http://127.0.0.1:8000`

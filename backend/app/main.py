@@ -11,6 +11,7 @@ from app.core.exceptions import (
     StudentNotFoundError,
     StudentValidationError,
     duplicate_roll_number_handler,
+    generic_exception_handler,
     student_not_found_handler,
     student_validation_handler,
 )
@@ -92,6 +93,7 @@ app.add_middleware(
 app.add_exception_handler(StudentNotFoundError, student_not_found_handler)
 app.add_exception_handler(DuplicateRollNumberError, duplicate_roll_number_handler)
 app.add_exception_handler(StudentValidationError, student_validation_handler)
+app.add_exception_handler(Exception, generic_exception_handler)
 
 # Include Routers
 app.include_router(students_router, prefix=settings.API_V1_STR)
