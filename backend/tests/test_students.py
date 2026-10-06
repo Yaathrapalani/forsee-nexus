@@ -240,3 +240,96 @@ def test_delete_student_success(client: TestClient, sample_student_payload: dict
 def test_delete_nonexistent_student(client: TestClient):
     del_res = client.delete("/api/v1/students/999999")
     assert del_res.status_code == 404
+
+
+def test_readiness_check(client: TestClient):
+    res = client.get("/ready")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "ready"
+    assert data["database"] == "connected"
+
+
+def test_request_id_and_security_headers(client: TestClient):
+    custom_request_id = "test-corr-id-12345"
+    res = client.get("/health", headers={"X-Request-ID": custom_request_id})
+    assert res.status_code == 200
+    assert res.headers.get("X-Request-ID") == custom_request_id
+    assert res.headers.get("X-Content-Type-Options") == "nosniff"
+    assert res.headers.get("X-Frame-Options") == "DENY"
+    assert res.headers.get("Referrer-Policy") == "strict-origin-when-cross-origin"
+    assert "X-Response-Time-Ms" in res.headers
+
+
+def test_pagination_headers_and_bounds(
+    client: TestClient, sample_student_payload: dict
+):
+    client.post("/api/v1/students", json=sample_student_payload)
+
+    res = client.get("/api/v1/students?skip=0&limit=50")
+    assert res.status_code == 200
+    assert "X-Total-Count" in res.headers
+    assert int(res.headers["X-Total-Count"]) >= 1
+    assert res.headers.get("X-Page-Limit") == "50"
+    assert res.headers.get("X-Page-Skip") == "0"
+
+
+def test_search_query_filter(client: TestClient):
+    client.post(
+        "/api/v1/students",
+        json={
+            "name": "Arjun Das",
+            "roll_number": "2024AD99",
+            "department": "CSE",
+            "year": 4,
+        },
+    )
+    client.post(
+        "/api/v1/students",
+        json={
+            "name": "Bhavna Patel",
+            "roll_number": "2024BP88",
+            "department": "ECE",
+            "year": 3,
+        },
+    )
+
+    # Search by name substring
+    res_name = client.get("/api/v1/students?q=arjun")
+    assert res_name.status_code == 200
+    items = res_name.json()
+    assert len(items) == 1
+    assert items[0]["name"] == "Arjun Das"
+
+    # Search by roll number substring
+    res_roll = client.get("/api/v1/students?q=BP88")
+    assert res_roll.status_code == 200
+    assert len(res_roll.json()) == 1
+    assert res_roll.json()[0]["name"] == "Bhavna Patel"
+
+
+def test_optimistic_concurrency_conflict(
+    client: TestClient, sample_student_payload: dict
+):
+    # Create initial student
+    create_res = client.post("/api/v1/students", json=sample_student_payload)
+    student = create_res.json()
+    student_id = student["id"]
+    initial_version = student["version"]
+    assert initial_version == 1
+
+    # Update with correct version
+    update1 = client.put(
+        f"/api/v1/students/{student_id}",
+        json={"name": "Priya Nair Updated", "version": 1},
+    )
+    assert update1.status_code == 200
+    assert update1.json()["version"] == 2
+
+    # Attempt second update using stale version (1 instead of 2) -> 409 Conflict
+    conflict_res = client.put(
+        f"/api/v1/students/{student_id}",
+        json={"name": "Stale Update Attempt", "version": 1},
+    )
+    assert conflict_res.status_code == 409
+    assert "conflict" in conflict_res.json()["detail"].lower()

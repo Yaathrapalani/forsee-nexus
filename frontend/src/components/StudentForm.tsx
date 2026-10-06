@@ -141,6 +141,7 @@ export const StudentForm: React.FC<StudentFormProps> = ({
       skills: skills,
       linkedin_url: linkedinUrl.trim() || null,
       github_url: githubUrl.trim() || null,
+      version: initialStudent.version,
     };
 
     await onSave(payload);

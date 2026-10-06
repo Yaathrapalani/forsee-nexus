@@ -7,6 +7,36 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Constellation Backdrop (Subtle Spatial Geometry)
+   -------------------------------------------------------------------------- */
+.constellation-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  color: #38bdf8;
+  opacity: 0.22;
+}
+
+.constellation-grid {
+  position: absolute;
+  inset: 0;
+  background-size: 48px 48px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+}
+
+.constellation-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
 /* --------------------------------------------------------------------------
@@ -16,7 +46,9 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: #0f172a;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-subtle);
   padding: 0.75rem 1.5rem;
 }
@@ -139,6 +171,16 @@
   border-color: var(--border-strong);
 }
 
+.btn-danger {
+  background: var(--error);
+  color: #fff;
+  border-color: transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+}
+
 .btn-danger-outline {
   background: transparent;
   color: #f87171;
@@ -234,7 +276,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Main Layout & Toolbar
+   Main Layout Container
    -------------------------------------------------------------------------- */
 .main-content-container {
   max-width: 860px;
@@ -242,67 +284,165 @@
   margin: 1.5rem auto 3rem;
   padding: 0 1.25rem;
   flex: 1;
+  position: relative;
+  z-index: 10;
 }
 
-.nexus-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
+/* --------------------------------------------------------------------------
+   Directory Bar & Index Controls
+   -------------------------------------------------------------------------- */
+.directory-bar-container {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  padding: 0.65rem 0.9rem;
-  border-radius: var(--radius-md);
-  margin-bottom: 1.25rem;
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: var(--shadow-sm);
 }
 
-.toolbar-left, .toolbar-right {
+.directory-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.directory-title-group {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
-.students-selector-group {
+.directory-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-.student-select-dropdown {
-  background: var(--bg-input);
-  color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 0.4rem 0.65rem;
-  font-size: 0.85rem;
-  font-family: inherit;
-  outline: none;
-  min-width: 240px;
-}
-
-.student-count-pill {
-  background: #0f172a;
-  padding: 0.2rem 0.5rem;
-  border-radius: var(--radius-sm);
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
-  border: 1px solid var(--border-subtle);
 }
 
-.filter-group {
+.directory-count-badge {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  background: #0f172a;
+  border: 1px solid var(--border-subtle);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+}
+
+.directory-search-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
+  min-width: 260px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.directory-search-input {
+  width: 100%;
+  background: #0f172a;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 2rem 0.45rem 2rem;
+  color: var(--text-primary);
+  font-size: 0.825rem;
+  outline: none;
+  font-family: inherit;
+  transition: border-color var(--transition-fast);
+}
+
+.directory-search-input:focus {
+  border-color: var(--border-focus);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.65rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.directory-filters-bar {
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
 }
 
-.filter-input, .filter-select {
-  background: var(--bg-input);
+.filter-chips-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.filter-sublabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-right: 0.3rem;
+  min-width: 38px;
+}
+
+.filter-chip {
+  background: #0f172a;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.filter-chip.active {
+  background: var(--primary);
+  border-color: var(--primary-light);
+  color: #fff;
+  font-weight: 600;
+}
+
+.directory-selector-row {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.directory-select-dropdown {
+  width: 100%;
+  background: #0f172a;
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 0.4rem 0.6rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
   outline: none;
-  font-size: 0.8rem;
   font-family: inherit;
 }
 
@@ -846,7 +986,7 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -886,6 +1026,60 @@
   font-size: 1.15rem;
   font-weight: 700;
   color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   Delete Confirmation Dialog
+   -------------------------------------------------------------------------- */
+.delete-dialog-container {
+  max-width: 480px;
+}
+
+.text-danger {
+  color: var(--error);
+}
+
+.text-danger-icon {
+  color: var(--error);
+}
+
+.delete-dialog-body {
+  margin-bottom: 1.25rem;
+}
+
+.delete-warning-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.delete-student-summary {
+  background: #0f172a;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.summary-field {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.825rem;
+}
+
+.summary-label {
+  color: var(--text-muted);
+}
+
+.summary-value {
+  color: var(--text-primary);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
 }
 
 /* --------------------------------------------------------------------------
@@ -940,19 +1134,14 @@
     margin: 1rem auto 2rem;
   }
 
-  .nexus-toolbar {
-    flex-direction: column;
-    align-items: stretch;
+  .directory-search-wrapper {
+    max-width: 100%;
+    min-width: 100%;
   }
 
-  .toolbar-left, .toolbar-right {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .student-select-dropdown {
-    width: 100%;
-    min-width: unset;
+  .filter-chips-row {
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
   }
 
   .card-body {

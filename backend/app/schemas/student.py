@@ -150,6 +150,9 @@ class StudentUpdate(BaseModel):
     skills: list[str] | None = Field(None)
     linkedin_url: str | None = Field(None, max_length=500)
     github_url: str | None = Field(None, max_length=500)
+    version: int | None = Field(
+        None, ge=1, description="Expected version for optimistic concurrency control"
+    )
 
     @field_validator("name", mode="before")
     @classmethod
@@ -191,6 +194,7 @@ class StudentResponse(StudentBase):
     """Schema returned to API clients."""
 
     id: int
+    version: int = Field(1, description="Record concurrency version")
     created_at: datetime
     updated_at: datetime
 

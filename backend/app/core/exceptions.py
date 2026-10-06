@@ -20,6 +20,17 @@ class StudentValidationError(Exception):
         super().__init__(message)
 
 
+class ConcurrencyConflictError(Exception):
+    def __init__(self, expected_version: int, current_version: int):
+        self.expected_version = expected_version
+        self.current_version = current_version
+        super().__init__(
+            f"Concurrency conflict: record was modified by another transaction "
+            f"(expected version {expected_version}, current version {current_version}). "
+            f"Please refresh and retry."
+        )
+
+
 async def student_not_found_handler(
     request: Request, exc: StudentNotFoundError
 ) -> JSONResponse:
@@ -47,8 +58,17 @@ async def student_validation_handler(
     )
 
 
+async def concurrency_conflict_handler(
+    request: Request, exc: ConcurrencyConflictError
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_409_CONFLICT,
+        content={"detail": str(exc)},
+    )
+
+
 async def generic_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    # Log exception internally, don't leak raw stack traces to the client
+    # Safe error message in client response; full detail logged on server
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={

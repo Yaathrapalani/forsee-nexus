@@ -15,9 +15,10 @@ service = StudentService()
     response_model=list[StudentResponse],
     status_code=status.HTTP_200_OK,
     summary="List all student records",
-    description="Retrieve student records with optional department, year filtering and pagination.",
+    description="Retrieve student records with optional search, department/year filtering, and bounded pagination.",
 )
 def list_students(
+    response: Response,
     department: str | None = Query(
         None,
         description="Filter students by department (e.g. 'Computer Science & Engineering')",
@@ -25,15 +26,31 @@ def list_students(
     year: int | None = Query(
         None, ge=1, le=5, description="Filter students by academic year (1-5)"
     ),
+    q: str | None = Query(
+        None,
+        max_length=100,
+        description="Search query matching student name or roll number",
+    ),
     skip: int = Query(0, ge=0, description="Number of records to skip"),
     limit: int = Query(
-        50, ge=1, le=100, description="Maximum number of records to return"
+        50,
+        ge=1,
+        le=100,
+        description="Maximum number of records to return (capped at 100)",
     ),
     db: Session = Depends(get_db),
 ) -> list[StudentResponse]:
-    return service.list_students(
-        db=db, skip=skip, limit=limit, department=department, year=year
+    total_count = service.count_students(db=db, department=department, year=year, q=q)
+    items = service.list_students(
+        db=db, skip=skip, limit=limit, department=department, year=year, q=q
     )
+
+    # Expose pagination metadata in standard HTTP headers
+    response.headers["X-Total-Count"] = str(total_count)
+    response.headers["X-Page-Limit"] = str(limit)
+    response.headers["X-Page-Skip"] = str(skip)
+
+    return items
 
 
 @router.post(
@@ -69,7 +86,7 @@ def get_student(
     response_model=StudentResponse,
     status_code=status.HTTP_200_OK,
     summary="Update student details",
-    description="Update academic, personal, or skill attributes for an existing student.",
+    description="Update academic, personal, or skill attributes for an existing student with optimistic concurrency protection.",
 )
 def update_student(
     student_id: int,

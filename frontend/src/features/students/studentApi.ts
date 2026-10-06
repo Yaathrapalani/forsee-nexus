@@ -1,4 +1,10 @@
-import type { Student, StudentCreateInput, StudentUpdateInput, ApiError } from './studentTypes';
+import type {
+  Student,
+  StudentCreateInput,
+  StudentUpdateInput,
+  StudentListFilters,
+  ApiError,
+} from './studentTypes';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 const ROOT_URL = import.meta.env.VITE_ROOT_URL || 'http://localhost:8000';
@@ -12,7 +18,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
         if (typeof errJson.detail === 'string') {
           errorDetail = errJson.detail;
         } else if (Array.isArray(errJson.detail)) {
-          // Format Pydantic validation errors nicely
+          // Format validation errors cleanly
           errorDetail = errJson.detail
             .map((e: { loc?: string[]; msg?: string }) => {
               const field = e.loc ? e.loc[e.loc.length - 1] : 'field';
@@ -39,13 +45,27 @@ export const studentApi = {
     return handleResponse<{ status: string; service: string; version: string }>(res);
   },
 
-  async list(filters?: { department?: string; year?: number }): Promise<Student[]> {
+  async getReady(): Promise<{ status: string; database: string }> {
+    const res = await fetch(`${ROOT_URL}/ready`);
+    return handleResponse<{ status: string; database: string }>(res);
+  },
+
+  async list(filters?: StudentListFilters): Promise<Student[]> {
     const url = new URL(`${API_BASE}/students`);
     if (filters?.department) {
       url.searchParams.append('department', filters.department);
     }
     if (filters?.year) {
       url.searchParams.append('year', filters.year.toString());
+    }
+    if (filters?.q) {
+      url.searchParams.append('q', filters.q.trim());
+    }
+    if (filters?.skip !== undefined) {
+      url.searchParams.append('skip', filters.skip.toString());
+    }
+    if (filters?.limit !== undefined) {
+      url.searchParams.append('limit', filters.limit.toString());
     }
     const res = await fetch(url.toString());
     return handleResponse<Student[]>(res);
