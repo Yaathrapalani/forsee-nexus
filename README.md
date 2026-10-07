@@ -4,6 +4,14 @@
 > FORESE Development Team Recruitment 2026 Submission  
 > *Production-minded architecture designed for ~6,000 students and high-concurrency campus workflows.*
 
+[![Python](https://img.shields.io/badge/Python-3.12-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-19-61DAFB.svg?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.0-646CFF.svg?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tests](https://img.shields.io/badge/Pytest-17%2F17%20Passed-success.svg?logo=pytest&logoColor=white)](backend/tests/)
+[![Code Style](https://img.shields.io/badge/Code%20Style-Black%20%2B%20Ruff-000000.svg)](https://github.com/psf/black)
+
 ---
 
 ## What It Is
@@ -11,6 +19,20 @@
 **FORSEE Nexus** is a full-stack, college-scale student identity and profile management system developed for FORESE. It pairs a layered, concurrency-safe FastAPI backend with a distinctive, institutional React frontend designed under the **"Student Constellation"** visual philosophy.
 
 Rather than resembling a generic SaaS dashboard or AI template, FORSEE Nexus presents student identity with editorial dignity, spatial clarity, and technical discipline.
+
+---
+
+## Visual Showcase
+
+| Student Profile & Constellation Canvas | Interactive In-Place Profile Editor |
+| :---: | :---: |
+| ![Desktop Profile](docs/screenshots/01_student_profile_desktop.png) | ![Profile Edit Mode](docs/screenshots/02_student_profile_edit_mode.png) |
+| *Editorial identity card with live avatar preview, skills cloud, and institutional verification* | *Optimistic concurrency-backed editing modal with interactive tag curation* |
+
+| Interactive OpenAPI / Swagger Documentation | Responsive Mobile Dossier View |
+| :---: | :---: |
+| ![API Documentation](docs/screenshots/03_api_swagger_docs.png) | ![Mobile View](docs/screenshots/05_student_profile_mobile.png) |
+| *Production OpenAPI 3.0 specification with strict schema validation and query filtering* | *Fully responsive mobile layout optimized for handheld campus browsing* |
 
 ---
 

@@ -21,6 +21,7 @@ from app.core.exceptions import (
     student_validation_handler,
 )
 from app.db.database import Base, SessionLocal, engine
+from app.db.seed_data import SAMPLE_STUDENTS
 from app.models.student import Student
 
 logging.basicConfig(
@@ -31,36 +32,32 @@ logger = logging.getLogger("forsee-nexus")
 
 
 def seed_initial_data() -> None:
-    """Seed initial sample student for demo and recruitment inspection if DB is empty."""
+    """Seed sample students for recruitment inspection if DB has fewer than 12 records."""
     db = SessionLocal()
     try:
         count = db.query(Student).count()
-        if count == 0:
-            logger.info("Database is empty. Seeding initial student profile...")
-            sample_student = Student(
-                name="Aarav Sharma",
-                roll_number="2024CS0142",
-                department="Computer Science & Engineering",
-                year=3,
-                avatar_url="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600",
-                skills=[
-                    "React",
-                    "TypeScript",
-                    "FastAPI",
-                    "Python",
-                    "SQLAlchemy",
-                    "Tailwind CSS",
-                    "Git",
-                ],
-                linkedin_url="https://linkedin.com/in/aarav-sharma",
-                github_url="https://github.com/aarav-sharma",
+        if count < len(SAMPLE_STUDENTS):
+            logger.info(
+                "Syncing sample student cohort (%s existing, %s target)...",
+                count,
+                len(SAMPLE_STUDENTS),
             )
-            db.add(sample_student)
+            created = 0
+            for item in SAMPLE_STUDENTS:
+                existing = (
+                    db.query(Student)
+                    .filter(Student.roll_number == item["roll_number"])
+                    .first()
+                )
+                if not existing:
+                    student = Student(**item)
+                    db.add(student)
+                    created += 1
             db.commit()
             logger.info(
-                "Successfully seeded initial student: %s (ID: %s)",
-                sample_student.name,
-                sample_student.id,
+                "Successfully seeded %s new students. Total in DB: %s",
+                created,
+                db.query(Student).count(),
             )
     except Exception as e:
         logger.warning("Could not run initial seed: %s", e)

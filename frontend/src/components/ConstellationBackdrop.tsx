@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 /**
- * Procedural spatial backdrop representing "The Student Constellation".
- * Renders subtle coordinate marks, faint academic grid nodes, and gentle spatial depth.
- * Respects prefers-reduced-motion and maintains high text contrast.
+ * Procedural spatial backdrop representing the "Subtle Academic Grid".
+ * Renders precise engineering graph lines, academic registry coordinates,
+ * subtle intersection crosshairs (+), and gentle ambient depth.
+ * Fully responsive and respects prefers-reduced-motion.
  */
 export const ConstellationBackdrop: React.FC = () => {
   const [coords, setCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -25,9 +26,9 @@ export const ConstellationBackdrop: React.FC = () => {
 
     const handleMouseMove = (e: MouseEvent) => {
       if (mediaQuery.matches) return;
-      // Gentle normalized offset (-15px to +15px)
-      const x = ((e.clientX / window.innerWidth) - 0.5) * 20;
-      const y = ((e.clientY / window.innerHeight) - 0.5) * 20;
+      // Gentle normalized parallax offset (-12px to +12px)
+      const x = (e.clientX / window.innerWidth - 0.5) * 16;
+      const y = (e.clientY / window.innerHeight - 0.5) * 16;
       setCoords({ x, y });
     };
 
@@ -45,65 +46,77 @@ export const ConstellationBackdrop: React.FC = () => {
       };
 
   return (
-    <div className="constellation-backdrop" aria-hidden="true">
-      <div className="constellation-grid" />
+    <div className="academic-grid-backdrop" aria-hidden="true">
+      {/* Precision Academic Graph Rulings */}
+      <div className="academic-grid-pattern" />
+
+      {/* Radial Depth Lighting */}
+      <div className="academic-glow-vignette" />
+
+      {/* Procedural Academic Coordinates & Calibration Crosshairs */}
       <svg
-        className="constellation-svg"
+        className="academic-grid-svg"
         style={transformStyle}
-        viewBox="0 0 1200 800"
+        viewBox="0 0 1440 900"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Subtle coordinate anchors */}
-        <circle cx="150" cy="120" r="2" fill="currentColor" opacity="0.3" />
-        <circle cx="350" cy="80" r="2.5" fill="currentColor" opacity="0.35" />
-        <circle cx="600" cy="150" r="2" fill="currentColor" opacity="0.25" />
-        <circle cx="850" cy="90" r="3" fill="currentColor" opacity="0.4" />
-        <circle cx="1050" cy="160" r="2" fill="currentColor" opacity="0.3" />
+        {/* Major Grid Lines */}
+        <line x1="120" y1="0" x2="120" y2="900" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 6" opacity="0.12" />
+        <line x1="360" y1="0" x2="360" y2="900" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 6" opacity="0.1" />
+        <line x1="720" y1="0" x2="720" y2="900" stroke="currentColor" strokeWidth="0.6" strokeDasharray="4 8" opacity="0.16" />
+        <line x1="1080" y1="0" x2="1080" y2="900" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 6" opacity="0.1" />
+        <line x1="1320" y1="0" x2="1320" y2="900" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 6" opacity="0.12" />
 
-        <circle cx="200" cy="400" r="2.5" fill="currentColor" opacity="0.3" />
-        <circle cx="500" cy="480" r="3" fill="currentColor" opacity="0.35" />
-        <circle cx="800" cy="420" r="2" fill="currentColor" opacity="0.25" />
-        <circle cx="1000" cy="520" r="2.5" fill="currentColor" opacity="0.3" />
+        <line x1="0" y1="120" x2="1440" y2="120" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 6" opacity="0.12" />
+        <line x1="0" y1="300" x2="1440" y2="300" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 6" opacity="0.1" />
+        <line x1="0" y1="600" x2="1440" y2="600" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 6" opacity="0.1" />
+        <line x1="0" y1="780" x2="1440" y2="780" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 6" opacity="0.12" />
 
-        <circle cx="180" cy="680" r="2" fill="currentColor" opacity="0.25" />
-        <circle cx="450" cy="720" r="3" fill="currentColor" opacity="0.4" />
-        <circle cx="750" cy="690" r="2" fill="currentColor" opacity="0.3" />
-        <circle cx="980" cy="740" r="2.5" fill="currentColor" opacity="0.35" />
+        {/* Academic Precision Crosshairs (+) at key coordinate intersections */}
+        {/* Top row */}
+        <g opacity="0.3" stroke="currentColor" strokeWidth="0.8">
+          <path d="M 115 120 H 125 M 120 115 V 125" />
+          <path d="M 355 120 H 365 M 360 115 V 125" />
+          <path d="M 715 120 H 725 M 720 115 V 125" />
+          <path d="M 1075 120 H 1085 M 1080 115 V 125" />
+          <path d="M 1315 120 H 1325 M 1320 115 V 125" />
+        </g>
 
-        {/* Faint institutional constellation arcs and vectors */}
-        <path
-          d="M 150 120 L 350 80 L 600 150 L 850 90 L 1050 160"
-          stroke="currentColor"
-          strokeWidth="0.8"
-          strokeDasharray="4 6"
-          opacity="0.15"
-        />
-        <path
-          d="M 200 400 L 500 480 L 800 420 L 1000 520"
-          stroke="currentColor"
-          strokeWidth="0.8"
-          strokeDasharray="4 6"
-          opacity="0.12"
-        />
-        <path
-          d="M 350 80 Q 500 280 500 480"
-          stroke="currentColor"
-          strokeWidth="0.7"
-          opacity="0.1"
-        />
-        <path
-          d="M 850 90 Q 750 300 800 420"
-          stroke="currentColor"
-          strokeWidth="0.7"
-          opacity="0.1"
-        />
+        {/* Middle row */}
+        <g opacity="0.35" stroke="currentColor" strokeWidth="0.8">
+          <path d="M 115 450 H 125 M 120 445 V 455" />
+          <path d="M 355 450 H 365 M 360 445 V 455" />
+          <path d="M 1075 450 H 1085 M 1080 445 V 455" />
+          <path d="M 1315 450 H 1325 M 1320 445 V 455" />
+        </g>
 
-        {/* Coordinate crosses (+) */}
-        <path d="M 80 80 L 80 90 M 75 85 L 85 85" stroke="currentColor" strokeWidth="0.8" opacity="0.25" />
-        <path d="M 1120 80 L 1120 90 M 1115 85 L 1125 85" stroke="currentColor" strokeWidth="0.8" opacity="0.25" />
-        <path d="M 80 720 L 80 730 M 75 725 L 85 725" stroke="currentColor" strokeWidth="0.8" opacity="0.25" />
-        <path d="M 1120 720 L 1120 730 M 1115 725 L 1125 725" stroke="currentColor" strokeWidth="0.8" opacity="0.25" />
+        {/* Bottom row */}
+        <g opacity="0.3" stroke="currentColor" strokeWidth="0.8">
+          <path d="M 115 780 H 125 M 120 775 V 785" />
+          <path d="M 355 780 H 365 M 360 775 V 785" />
+          <path d="M 715 780 H 725 M 720 775 V 785" />
+          <path d="M 1075 780 H 1085 M 1080 775 V 785" />
+          <path d="M 1315 780 H 1325 M 1320 775 V 785" />
+        </g>
+
+        {/* Faint academic observatory concentric calibration rings */}
+        <circle cx="720" cy="450" r="320" stroke="currentColor" strokeWidth="0.6" strokeDasharray="3 9" opacity="0.08" />
+        <circle cx="720" cy="450" r="480" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 12" opacity="0.06" />
+
+        {/* Marginal Academic Ledger Annotations */}
+        <text x="135" y="115" fill="currentColor" opacity="0.22" fontSize="9" fontFamily="var(--font-mono)" letterSpacing="1px">
+          FORESE // REG-2024
+        </text>
+        <text x="135" y="775" fill="currentColor" opacity="0.22" fontSize="9" fontFamily="var(--font-mono)" letterSpacing="1px">
+          SEC // CS-01
+        </text>
+        <text x="1220" y="115" fill="currentColor" opacity="0.22" fontSize="9" fontFamily="var(--font-mono)" letterSpacing="1px">
+          ACAD-GRID // 100%
+        </text>
+        <text x="1210" y="775" fill="currentColor" opacity="0.22" fontSize="9" fontFamily="var(--font-mono)" letterSpacing="1px">
+          INDEX-ID // #0142
+        </text>
       </svg>
     </div>
   );

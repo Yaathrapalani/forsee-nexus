@@ -62,6 +62,8 @@ export const DirectoryBar: React.FC<DirectoryBarProps> = ({
         <div className="directory-search-wrapper">
           <Search size={14} className="search-icon" />
           <input
+            id="directory-search-input"
+            name="search"
             type="text"
             className="directory-search-input"
             placeholder="Search by student name or roll number..."
@@ -130,6 +132,7 @@ export const DirectoryBar: React.FC<DirectoryBarProps> = ({
         </label>
         <select
           id="student-index-select"
+          name="selectedStudent"
           className="directory-select-dropdown"
           value={selectedStudentId || ''}
           onChange={(e) => onSelectStudent(Number(e.target.value))}

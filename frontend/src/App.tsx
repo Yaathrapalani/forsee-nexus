@@ -15,12 +15,13 @@ import type {
 } from './features/students/studentTypes';
 import { studentApi } from './features/students/studentApi';
 import { Navbar } from './components/Navbar';
-import { StudentCard } from './components/StudentCard';
+
 import { StudentForm } from './components/StudentForm';
 import { StudentManagementModal } from './components/StudentManagementModal';
 import { DirectoryBar } from './components/DirectoryBar';
 import { DeleteConfirmModal } from './components/DeleteConfirmModal';
-import { ConstellationBackdrop } from './components/ConstellationBackdrop';
+import { WireframeChamber } from './components/WireframeChamber';
+import { StudentBookStack } from './components/StudentBookStack';
 
 export const App: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
@@ -220,8 +221,8 @@ export const App: React.FC = () => {
 
   return (
     <div className="nexus-app-layout">
-      {/* Procedural Spatial Backdrop: The Student Constellation */}
-      <ConstellationBackdrop />
+      {/* Core Architectural 3D Perspective Wireframe Chamber */}
+      <WireframeChamber interactive={true} />
 
       {/* Navigation Header */}
       <Navbar
@@ -276,7 +277,7 @@ export const App: React.FC = () => {
           onYearChange={handleYearChange}
         />
 
-        {/* Active Profile Hero Viewport */}
+        {/* Active Profile & Book Stack Viewport */}
         <div className="content-viewport">
           {isLoading ? (
             <div className="loading-state-box" aria-live="polite">
@@ -298,8 +299,10 @@ export const App: React.FC = () => {
                 apiError={apiError}
               />
             ) : (
-              <StudentCard
-                student={currentStudent}
+              <StudentBookStack
+                students={students}
+                selectedStudentId={selectedStudentId}
+                onSelectStudent={handleSelectStudent}
                 onEdit={() => {
                   setApiError(null);
                   setIsEditMode(true);

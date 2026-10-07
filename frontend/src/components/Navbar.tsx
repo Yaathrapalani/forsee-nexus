@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraduationCap, FileCode, Plus, RefreshCw, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { FileCode, Plus, RefreshCw, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 interface NavbarProps {
   backendHealthy: boolean | null;
@@ -17,14 +17,28 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="navbar-header" role="banner">
       <div className="navbar-container">
-        {/* Brand identity */}
+        {/* Official FORESE Brand Identity */}
         <div className="navbar-brand">
-          <div className="brand-icon-box" aria-hidden="true">
-            <GraduationCap size={20} className="brand-icon" />
+          <div className="forese-logo-badge" aria-label="FORESE SVCE Official Crest">
+            <img
+              src="/forese-logo.png"
+              alt="FORESE Official Logo"
+              className="forese-logo-img"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (!target.src.includes('forese.co.in')) {
+                  target.src = 'https://forese.co.in/FOR.png';
+                }
+              }}
+            />
+            <div className="forese-logo-glow" aria-hidden="true" />
           </div>
           <div className="brand-text-group">
-            <span className="brand-name">FORESE</span>
-            <span className="brand-subtitle">Student Profile System</span>
+            <div className="brand-name-row">
+              <span className="brand-name">FORESE</span>
+              <span className="brand-sub-badge">SVCE</span>
+            </div>
+            <span className="brand-subtitle">Forum for Economic Studies by Engineers</span>
           </div>
         </div>
 

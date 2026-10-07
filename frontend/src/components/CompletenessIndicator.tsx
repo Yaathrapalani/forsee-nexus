@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Circle, ChevronDown, ChevronUp, CheckSquare } from 'lucide-react';
+import { CheckCircle2, Circle, ChevronDown, ChevronUp } from 'lucide-react';
 import type { Student } from '../features/students/studentTypes';
 
 interface CompletenessIndicatorProps {
@@ -76,26 +76,18 @@ export const CompletenessIndicator: React.FC<CompletenessIndicatorProps> = ({ st
 
   const getStatusColor = (percent: number) => {
     if (percent === 100) return 'var(--success)';
-    if (percent >= 60) return 'var(--primary)';
+    if (percent >= 60) return 'var(--primary-light)';
     return 'var(--warning)';
   };
 
   return (
-    <div className="completeness-card" aria-label="Profile completeness score">
-      <div className="completeness-header">
-        <div className="completeness-title-row">
-          <div className="completeness-title">
-            <CheckSquare size={16} className="completeness-icon" />
-            <span>Profile Completeness</span>
-          </div>
-          <span
-            className="completeness-percentage"
-            style={{ color: getStatusColor(totalPercentage) }}
-          >
-            {totalPercentage}%
-          </span>
-        </div>
+    <div className="card-section completeness-section" aria-label="Profile information completeness">
+      <div className="section-header-row">
+        <h2 className="section-heading">PROFILE INFORMATION</h2>
+      </div>
 
+      {/* Progress Bar + Percentage */}
+      <div className="completeness-bar-container">
         <div
           className="progress-bar-track"
           role="progressbar"
@@ -111,53 +103,58 @@ export const CompletenessIndicator: React.FC<CompletenessIndicatorProps> = ({ st
             }}
           />
         </div>
+        <span
+          className="completeness-percentage-val"
+          style={{ color: getStatusColor(totalPercentage) }}
+        >
+          {totalPercentage}%
+        </span>
+      </div>
 
-        <div className="completeness-subtext-row">
-          <span className="text-muted text-xs">
-            {totalPercentage === 100
-              ? 'All profile fields completed'
-              : `${checklist.length - completedCount} of ${checklist.length} fields remaining`}
-          </span>
-          <button
-            type="button"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="completeness-toggle-btn text-xs"
-            aria-expanded={isExpanded}
-          >
-            {isExpanded ? (
-              <>
-                <span>Hide details</span>
-                <ChevronUp size={14} />
-              </>
-            ) : (
-              <>
-                <span>View details</span>
-                <ChevronDown size={14} />
-              </>
-            )}
-          </button>
-        </div>
+      {/* Subtext description & collapsible breakdown toggle */}
+      <div className="completeness-status-row">
+        <span className="completeness-status-text">
+          {totalPercentage === 100
+            ? 'All profile fields completed'
+            : `${checklist.length - completedCount} of ${checklist.length} fields remaining`}
+        </span>
+        <button
+          type="button"
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="completeness-toggle-btn"
+          aria-expanded={isExpanded}
+        >
+          {isExpanded ? (
+            <>
+              <span>Hide details</span>
+              <ChevronUp size={13} />
+            </>
+          ) : (
+            <>
+              <span>View details</span>
+              <ChevronDown size={13} />
+            </>
+          )}
+        </button>
       </div>
 
       {isExpanded && (
-        <div className="completeness-breakdown">
+        <div className="completeness-breakdown-academic">
           {checklist.map((item) => (
             <div
               key={item.label}
               className={`checklist-row ${item.completed ? 'completed' : 'pending'}`}
             >
               {item.completed ? (
-                <CheckCircle2 size={15} className="checklist-icon success" />
+                <CheckCircle2 size={14} className="checklist-icon success" />
               ) : (
-                <Circle size={15} className="checklist-icon pending" />
+                <Circle size={14} className="checklist-icon pending" />
               )}
               <div className="checklist-info">
                 <span className="checklist-label">{item.label}</span>
-                <span className="checklist-hint text-xs text-muted">{item.hint}</span>
+                <span className="checklist-hint text-muted">{item.hint}</span>
               </div>
-              <span className="checklist-weight text-xs">
-                {item.completed ? `+${item.weight}%` : `${item.weight}%`}
-              </span>
+              <span className="checklist-weight">+{item.weight}%</span>
             </div>
           ))}
         </div>

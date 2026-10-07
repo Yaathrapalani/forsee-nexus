@@ -68,7 +68,25 @@ export const StudentCard: React.FC<StudentCardProps> = ({
 
   return (
     <article className="student-profile-card" aria-label={`Profile card for ${student.name}`}>
-      {/* Subtle Card Header */}
+      {/* Official FORESE Dossier Masthead Bar */}
+      <div className="card-masthead-row">
+        <div className="masthead-brand">
+          <img
+            src="/forese-logo.png"
+            alt="FORESE Official Crest"
+            className="card-forese-mini-logo"
+            onError={(e) => {
+              (e.target as HTMLElement).style.display = 'none';
+            }}
+          />
+          <span className="masthead-inst">FORESE // SVCE CAREER ARCHIVE</span>
+        </div>
+        <div className="masthead-seq">
+          <span className="masthead-reg">REG-2026</span>
+          <span className="masthead-id">DOSSIER #{String(student.id).padStart(4, '0')}</span>
+        </div>
+      </div>
+
       <div className="card-banner" />
 
       <div className="card-body">
